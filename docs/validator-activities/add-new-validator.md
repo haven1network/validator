@@ -13,7 +13,7 @@
     docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
     ```
 
-3. Propose the new validator using the command [`istanbul.propose(<address>, true)`](../../reference/api-methods.md#istanbul_propose). Replace `<address>` with the address of the new validator candidate node:
+3. Propose the new validator using the command `istanbul.propose(<address>, true)`. Replace `<address>` with the address of the new validator candidate node:
 
     ```javascript
     istanbul.propose("0x2aabbc1bb9bacef60a09764d1a1f4f04a47885c1", true);
