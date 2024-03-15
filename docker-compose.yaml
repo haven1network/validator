@@ -12,4 +12,3 @@ services:
       - ./data:/data
       - ./keystore:/keystore:ro
     entrypoint: /docker-entrypoint.sh
-    user: "goquorum:goquorum"
