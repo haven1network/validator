@@ -1,30 +1,26 @@
-# How to run add a new validator node to Haven1 Network
+# Adding a New Validator Node to Haven1 Network
 
-## When to do this activity
+## When to Perform This Activity
 
-- When the Haven1 Team contacts you.
+- This activity should be carried out when instructed by the Haven1 Team.
 
-## Steps to add a new validator
+## Steps to Add a New Validator
 
-1. Update your `static-nodes.json` with the new file provided by the team
+1. Update your `static-nodes.json` file with the new one provided by the team.
 2. Attach a `geth` console to the node:
 
-```bash
-docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
-```
+    ```bash
+    docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
+    ```
 
-2. Propose the new validator using the command [`istanbul.propose(<address>, true)`](../../reference/api-methods.md#istanbul_propose) with `<address>` replaced by the new validator candidate node address:
-  
-```javascript
+3. Propose the new validator using the command [`istanbul.propose(<address>, true)`](../../reference/api-methods.md#istanbul_propose). Replace `<address>` with the address of the new validator candidate node:
 
-istanbul.propose("0x2aabbc1bb9bacef60a09764d1a1f4f04a47885c1", true);
+    ```javascript
+    istanbul.propose("0x2aabbc1bb9bacef60a09764d1a1f4f04a47885c1", true);
+    ```
 
-```
+4. Exit the console:
 
-Exit the console:
-
-```javascript
-
-exit;
-
-```
+    ```javascript
+    exit;
+    ```
