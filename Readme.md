@@ -46,23 +46,36 @@ It is required to have a virtual machine with the following recommended requirem
 
 - CPU: 2 vCPU cores
 - Memory: 4 GB
-- Storage: 50 GB
+- Storage: 100 GB
 
 ### Prerequisites
 
-1. Obtain `genesis.json` and `static-nodes.json` from the [Haven1 Team](mailto:contact@haven1.org).
+1. Obtain following from the [Haven1 Team](mailto:contact@haven1.org).
+    - genesis.json file
+    - static-nodes.json file
+    - TS_AUTHKEY
 2. Ensure you have [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed (version 14 or higher).
 3. Install [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
 
 ### Initial Setup and Key Generation
 
-1. Create a directory for the new node:
+1. Clone the repository
 
     ```bash
-    mkdir -p data/keystore
+    git clone git@github.com:haven1network/validator.git
     ```
 
-2. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool):
+2. Create a directories for the new node:
+
+    ```bash
+    mkdir -p data data/keystore
+    ```
+
+3. Update TS_AUTHKEY enviroment variable in the `docker-compose.yaml` with the provided value
+
+4. Place the `genesis.json` and `static-nodes.json` files provided in the `data` directory.
+
+5. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool):
 
     ```bash
     npm i -g quorum-genesis-tool
@@ -73,7 +86,7 @@ It is required to have a virtual machine with the following recommended requirem
     --outputPath artifacts
     ```
 
-3. Copy the generated artifacts:
+6. Copy the generated artifacts:
 
     ```bash
     export BASE_PATH=${pwd}
@@ -82,9 +95,7 @@ It is required to have a virtual machine with the following recommended requirem
     cp account* ${BASE_PATH}/data/keystore
     ```
 
-4. Place the `genesis.json` and `static-nodes.json` files provided by the Haven1 Team in the `data` directory.
-
-5. Get the validator address:
+7. Get the validator address:
 
     ```bash
     cat ${BASE_PATH}/data/keystore/accountAddress
@@ -97,7 +108,11 @@ It is required to have a virtual machine with the following recommended requirem
 
 ### Spin up the Node
 
-1. Once validation is complete, execute `docker-compose up` to start the container.
+Once the validation is complete perform the following actions.
+    ```bash
+    cd validator
+    docker-compose up
+    ```
 
 ### Test Node is Validating
 
