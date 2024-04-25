@@ -59,7 +59,7 @@ It is required to have a virtual machine with the following recommended requirem
 1. Create a directory for the new node:
 
     ```bash
-    mkdir -p /data/keystore
+    mkdir -p data/keystore
     ```
 
 2. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool):
@@ -76,9 +76,10 @@ It is required to have a virtual machine with the following recommended requirem
 3. Copy the generated artifacts:
 
     ```bash
+    export BASE_PATH=${pwd}
     cd artifacts/2022-04-21-08-10-29/validator0
-    cp nodekey* address /data
-    cp account* /data/keystore
+    cp nodekey* address ${BASE_PATH}/data
+    cp account* ${BASE_PATH}/data/keystore
     ```
 
 4. Place the `genesis.json` and `static-nodes.json` files provided by the Haven1 Team in the `data` directory.
@@ -86,7 +87,7 @@ It is required to have a virtual machine with the following recommended requirem
 5. Get the validator address:
 
     ```bash
-    cat /etc/goquorum/keystore/accountAddress
+    cat ${BASE_PATH}/data/keystore/accountAddress
     ```
 
 ### Sharing Instance Information
@@ -103,7 +104,7 @@ It is required to have a virtual machine with the following recommended requirem
 - Attach a `geth` console to the node:
 
     ```bash
-    docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
+    docker run -it quorumengineering/quorum:22.7.1 attach ${BASE_PATH}/data/geth.ipc
     ```
 
 - Verify Mining Status (Validators Only). It should return true if mining is enabled on validators.
