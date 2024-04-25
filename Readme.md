@@ -34,6 +34,7 @@ All code included in this repository has been extensively commented to make it s
   - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
   - [Sharing Instance Information](#sharing-instance-information)
   - [Spin up the Node](#spin-up-the-node)
+  - [Test New Node](#test-node-is-validating)
 - [Validator Activities](#validator-activities)
   - [Accepting a New Validator Node for Haven1 Network](#accepting-a-new-validator-node-for-haven1-network)
 
@@ -97,6 +98,44 @@ It is required to have a virtual machine with the following recommended requirem
 ### Spin up the Node
 
 1. Once validation is complete, execute `docker-compose up` to start the container.
+
+### Test Node is Validating
+
+- Attach a `geth` console to the node:
+
+    ```bash
+    docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
+    ```
+
+- Verify Mining Status (Validators Only). It should return true if mining is enabled on validators.
+
+    ```javascript
+    eth.mining
+    ```
+
+- Check Peer Count
+
+    ```javascript
+    net.peerCount
+    ```
+
+The peer count should be equal to the total number of nodes minus one (representing the node itself).
+
+- Verify Block Number. To ensure that new blocks are being added to the blockchain, check the current block number with the following command:
+
+    ```javascript
+    eth.blockNumber
+    ```
+
+This number should increase over time as new blocks are added.
+
+- If all tests generate positive results, we have successfully added a new RPC node.
+
+- Exit the Geth console
+
+    ```javascript
+    exit
+    ```
 
 ## Validator Activities
 
