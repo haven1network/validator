@@ -40,14 +40,13 @@ All code included in this repository has been extensively commented to make it s
 
 ## Setup Validator Instance
 
-
 ### Hardware Requirements
 
 It is required to have a virtual machine with the following recommended requirements:
 
-- CPU:
-- Memory:
-- Storage:
+- CPU: 2 vCPU cores
+- Memory: 4 GB
+- Storage: 50 GB
 
 ### Prerequisites
 
