@@ -25,11 +25,20 @@ It provides a full testing suite with a number of helpful utility functions, dep
 
 All code included in this repository has been extensively commented to make it self-documenting and easy to comprehend.
 
-<a id="setup"></a>
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Setup Validator Instance](#setup-validator-instance)
+  - [Hardware Requirements](#hardware-requirements)
+  - [Prerequisites](#prerequisites)
+  - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
+  - [Sharing Instance Information](#sharing-instance-information)
+  - [Spin up the Node](#spin-up-the-node)
+- [Validator Activities](#validator-activities)
+  - [Accepting a New Validator Node for Haven1 Network](#accepting-a-new-validator-node-for-haven1-network)
 
 ## Setup Validator Instance
 
-<a id="Hardware Requirements"></a>
 
 ### Hardware Requirements
 
@@ -38,8 +47,6 @@ It is required to have a virtual machine with the following recommended requirem
 - CPU:
 - Memory:
 - Storage:
-
-<a id="prerequisites"></a>
 
 ### Prerequisites
 
