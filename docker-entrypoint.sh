@@ -1,5 +1,5 @@
 geth \
---networkid 810 \
+--networkid ${NETWORKID} \
 --gcmode archive \
 --password ./keystore/accountPassword \
 --keystore /keystore \
@@ -9,7 +9,7 @@ geth \
 --syncmode full \
 --port 30303 \
 --nousb \
---identity GoQuorumNode \
+--identity ${TS_HOSTNAME}-validator \
 --nodekey ./keystore/nodekey \
 --nodiscover \
 --metrics \
@@ -32,7 +32,7 @@ geth \
 --ws.api admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,qbft init ./data/genesis.json
 
 geth \
---networkid 810 \
+--networkid ${NETWORKID} \
 --gcmode archive \
 --password /keystore/accountPassword \
 --keystore /keystore \
@@ -42,7 +42,7 @@ geth \
 --syncmode full \
 --port 30303 \
 --nousb \
---identity GoQuorumNode \
+--identity ${TS_HOSTNAME}-validator \
 --nodekey /keystore/nodekey \
 --nodiscover \
 --metrics \

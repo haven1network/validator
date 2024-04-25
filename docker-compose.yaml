@@ -2,39 +2,30 @@ version: '3'
 
 services:
   tailscale:
-    image: tailscale/tailscale:latest
+    image: tailscale/tailscale:v1.64
     hostname: tailscale-validator
-    environment:
-      - TS_AUTHKEY=tskey-client-notAReal-OAuthClientSecret1Atawk
-      - TS_EXTRA_ARGS=--advertise-tags=tag:container
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
+    env_file:
+      - .env
     volumes:
-      - ${PWD}/tailscale-validatro/state:/var/lib/tailscale
+      - ${PWD}/tailscale-validator/state:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
       - sys_module
     restart: unless-stopped
   node:
+    env_file:
+      - .env
     image: quorumengineering/quorum:22.7.1
     ports:
       - "8545:8545"
       - "8546:8546"
       - "30303:30303"
-    command:
-      --datadir ./data
-      --identity node3
-      --networkid ${NETWORK_ID} --nodiscover
-      --syncmode full
-      --mine --miner.threads 1 --miner.gasprice 0 --emitcheckpoints
-      --unlock ${ADDRESS_VALIDATOR_3} --allow-insecure-unlock --password ./data/keystore/accountPassword
-      --http --http.addr 0.0.0.0 --http.port 22003 --http.corsdomain "*" --http.vhosts "*"
-      --ws --ws.addr 0.0.0.0 --ws.port 32003 --ws.origins "*"
-      --http.api admin,eth,debug,miner,net,txpool,personal,web3
-      --ws.api admin,eth,debug,miner,net,txpool,personal,web3
-      --port 30301
     volumes:
+      - ./docker-entrypoint.sh:/docker-entrypoint.sh
       - ./data:/data
       - ./keystore:/keystore:ro
+    depends_on:
+      - tailscale
+    network_mode: service:tailscale
     entrypoint: /docker-entrypoint.sh
