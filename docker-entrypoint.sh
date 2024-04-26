@@ -14,18 +14,18 @@ geth \
 --nodiscover \
 --metrics \
 --pprof \
---pprof.addr 127.0.0.1 \
+--pprof.addr 0.0.0.0\
 --pprof.port 9545 \
 --istanbul.blockperiod 5 \
 --istanbul.requesttimeout 10000 \
 --http \
---http.addr 127.0.0.1 \
+--http.addr 0.0.0.0\
 --http.port 8545 \
 --http.corsdomain '*' \
 --http.vhosts '*' \
 --http.api admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,qbft \
 --ws \
---ws.addr 127.0.0.1 \
+--ws.addr 0.0.0.0\
 --ws.port 8546 \
 --ws.origins '*' \
 --ws.rpcprefix '/' \
