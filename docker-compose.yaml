@@ -28,4 +28,4 @@ services:
     depends_on:
       - tailscale
     network_mode: service:tailscale
-    entrypoint: /docker-entrypoint.sh
+    entrypoint: ["sh" ,"-c", /docker-entrypoint.sh]
