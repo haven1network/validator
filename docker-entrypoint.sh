@@ -1,10 +1,10 @@
 geth \
---networkid ${NETWORKID} \
+--networkid "$NETWORKID" \
 --gcmode archive \
 --password ./keystore/accountPassword \
 --keystore /keystore \
 --permissioned \
---verbosity ${VERBOSITY} \
+--verbosity "${VERBOSITY}" \
 --datadir ./data \
 --syncmode full \
 --port 30303 \
@@ -62,4 +62,4 @@ geth \
 --ws.port 8546 \
 --ws.origins '*' \
 --ws.rpcprefix '/' \
---ws.api admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,qbft`
+--ws.api admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,qbft
