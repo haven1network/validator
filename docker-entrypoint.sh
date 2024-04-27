@@ -1,9 +1,13 @@
 geth \
---networkid "$NETWORKID" \
---gcmode archive \
+--networkid ${NETWORKID} \
+--unlock $(cat /keystore/accountAddress) \
+--allow-insecure-unlock \
 --password /keystore/accountPassword \
 --keystore /keystore \
 --permissioned \
+--mine \
+--emitcheckpoints \
+--miner.threads 1 \
 --verbosity "${VERBOSITY}" \
 --datadir /data \
 --syncmode full \
@@ -33,10 +37,14 @@ geth \
 
 geth \
 --networkid ${NETWORKID} \
---gcmode archive \
+--unlock $(cat /keystore/accountAddress) \
+--allow-insecure-unlock \
 --password /keystore/accountPassword \
 --keystore /keystore \
 --permissioned \
+--mine \
+--emitcheckpoints \
+--miner.threads 1 \
 --verbosity ${VERBOSITY} \
 --datadir /data \
 --syncmode full \
