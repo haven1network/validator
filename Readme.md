@@ -75,9 +75,16 @@ It is required to have a virtual machine with the following recommended requirem
     git clone git@github.com:haven1network/validator.git
     ```
 
-3. Create a directories for the new node:
+    If you dont have ssh setup use the http url
 
     ```bash
+    git clone https://github.com/haven1network/validator.git
+    ```
+
+3. Create a directories for the new node in the validator directory:
+
+    ```bash
+    cd validator
     mkdir -p data keystore
     ```
 
@@ -121,20 +128,21 @@ It is required to have a virtual machine with the following recommended requirem
     validator address
 
     ```bash
-    cat keystore/accountAddress
+    cat keystore/address
     ```
 
     validator nodekey.pub
 
     ```bash
-    cat data/nodekey.pub
+    cat keystore/nodekey.pub
     ```
 
 9. Turn on tailscale node for IP assignment.
 
     ```bash
     export $(cat .env | xargs)
-    tailscale up --hostname=$TS_HOSTNAME --authkey=$TS_AUTHKEY $TS_EXTRA_ARGS --accept-dns=true
+    # root use is needed for this command
+    tailscale up --hostname=$TS_HOSTNAME --authkey=$TS_AUTHKEY --accept-routes=true --accept-dns=true
     ```
 
 
