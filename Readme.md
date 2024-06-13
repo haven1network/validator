@@ -54,7 +54,6 @@ It is required to have a virtual machine with the following recommended requirem
 
 1. Obtain following from the [Haven1 Team](mailto:contact@haven1.org).
     - genesis.json file
-    - permission-config.json file
     - TS_AUTHKEY
 2. Ensure you have [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed (version 14 or higher).
 3. Install [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
@@ -69,7 +68,7 @@ It is required to have a virtual machine with the following recommended requirem
     - nodejs
     - [tailscale](https://tailscale.com/download)
 
-2. Clone the repository
+2. Clone the repository in a folder which is mounted to a storage which can be expanded in the future as the Haven1 Network keeps adding blocks with time.
 
     ```bash
     git clone git@github.com:haven1network/validator.git
@@ -81,7 +80,7 @@ It is required to have a virtual machine with the following recommended requirem
     git clone https://github.com/haven1network/validator.git
     ```
 
-3. Create a directories for the new node in the validator directory:
+3. Create some directories for the new node in the validator directory:
 
     ```bash
     cd validator
@@ -89,15 +88,16 @@ It is required to have a virtual machine with the following recommended requirem
     ```
 
 4. You need to make the follonwing changes in the `.env` file.
+
 | Variable    | Value                                |
 | ----------- | ------------------------------------ |
 | TS_HOSTNAME | Organisation Name                    |
 | TS_AUTHKEY  | `TS_AUTHKEY` Provided by haven1 team |
 | NETWORKID   | `810` for testnet  `8110` for devnet |
 
-5. Place the `genesis.json` and `permission-config.json` files provided in the`data` directory.
+5. Place the `genesis.json` file provided in the `data` directory.
 
-6. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool):
+6. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool) to generate a new set of keys and node:
 
     ```bash
     npm i -g quorum-genesis-tool
@@ -142,9 +142,8 @@ It is required to have a virtual machine with the following recommended requirem
     ```bash
     export $(cat .env | xargs)
     # root use is needed for this command
-    tailscale up --hostname=$TS_HOSTNAME --authkey=$TS_AUTHKEY --accept-routes=true --accept-dns=true
+    tailscale up --hostname=$TS_HOSTNAME --authkey=$TS_AUTHKEY --accept-routes=true --accept-dns=true --ssh
     ```
-
 
 ### Sharing Instance Information
 
@@ -157,8 +156,10 @@ It is required to have a virtual machine with the following recommended requirem
 
 ### Spin up the Node
 
-- Once the validation is complete you will recived a `static-nodes.json` file.
-- place the file in the `data` folder and run the following command.
+- Once the validation is complete you will recived the following files
+    - static-nodes.json
+    - permission-config.json
+- Place the files in the `data` folder and run the following command.
 
     ```bash
     ln -s static-nodes.json permissioned-nodes.json
@@ -170,10 +171,10 @@ It is required to have a virtual machine with the following recommended requirem
     tailscale status
     ```
 
-- You can spin up the node by running docker compose in the validator folder
+- You can spin up the node by running docker-compose in the validator folder
 
     ```bash
-    docker-compose up
+    docker-compose up -d
     ```
 
 ### Test Node is Validating
@@ -181,19 +182,19 @@ It is required to have a virtual machine with the following recommended requirem
 - Attach a `geth` console to the node:
 
     ```bash
-    docker run -it quorumengineering/quorum:22.7.1 attach ${BASE_PATH}/data/geth.ipc
+    docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
     ```
 
-- Verify Mining Status (Validators Only). It should return true if mining is enabled on validators.
+- Verify Syncing Status. It should return `false` once the syncing is completed
+
+    ```javascript
+    eth.syncing
+    ```
+
+- Once syncing is completed. Verify Mining Status. It should return true if mining is enabled on validators.
 
     ```javascript
     eth.mining
-    ```
-
-- Check Peer Count
-
-    ```javascript
-    net.peerCount
     ```
 
 The peer count should be equal to the total number of nodes minus one (representing the node itself).
@@ -223,7 +224,10 @@ For a new validator to be accepted in the network, all existing validators need 
 #### When to Perform This Activity
 
 - This activity should be carried out when instructed by the Haven1 Team.
-- You will be provided with a new `static-nodes.json` and the address of the new validator.
+- You will be provided with an updated `static-nodes.json` and the following information of the new validator.
+    - address
+    - accountAddress
+    - encodeID
 
 #### Steps to Add a New Validator
 
@@ -231,7 +235,7 @@ For a new validator to be accepted in the network, all existing validators need 
 2. Attach a `geth` console to the node:
 
     ```bash
-    docker run -v data:/data -it quorumengineering/quorum:22.7.1 attach /data/geth.ipc
+    docker run -v $(pwd)/data:/data -it quorumengineering/quorum:22.7.1 attach /data/geth.ipc
     ```
 
 3. Propose the new validator using the command `istanbul.propose(<address>, true)`. Replace `<address>` with the address of the new validator candidate node:
@@ -240,10 +244,44 @@ For a new validator to be accepted in the network, all existing validators need 
     istanbul.propose("<address>", true);
     ```
 
-4. Exit the console:
+4. Add new node to the `HAVEN1` Organisation
+
+    ```javascript
+    quorumPermission.addNode("HAVEN1","<enodeId>", { from: eth.accounts[0] });
+    ```
+
+5. Approve New Admin
+
+    ```javascript
+    # First Admin need to start the proposal system for new admin
+    quorumPermission.assignAdminRole("HAVEN1", "0xd141a28cdcc1b939926b56dcd394a02c11adb416", "ADMIN", { from: eth.accounts[0] })
+    # Subsequent Admin need to approve the new admin
+    quorumPermission.approveAdminRole("HAVEN1", "0xd141a28cdcc1b939926b56dcd394a02c11adb416", { from: eth.accounts[0] });
+    ```
+
+6. Exit the console:
 
     ```javascript
     exit;
     ```
 
-5. Update the Haven1 Team once you have performed the following actions.
+7. Update the Haven1 Team once you have performed the following actions.
+
+## Debugging Validator FAQ
+
+*Problem:* Geth Connection Refused running `attach` command
+*Possible Solution:* 
+    - Turn off your container
+    - remove geth.ipc if you still have a stray `geth.ipc` remaining then remove it.
+    - Start the container again and retry again
+    ```bash
+    docker-compose down
+    rm -f data/geth.ipc
+    docker-compose up -d
+    ```
+
+*Problem:* No file geth.ipc
+*Possible Solution:*
+    - Check if container is running.
+    - If the container is running then check the logs if there is any specific issue.
+    - Check if you have `geth.ipc` present in your local folder
