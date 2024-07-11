@@ -13,7 +13,7 @@ geth \
 --syncmode full \
 --port 30303 \
 --nousb \
---identity ${TS_HOSTNAME}-validator \
+--identity ${HOSTNAME}-validator \
 --nodekey /keystore/nodekey \
 --nodiscover \
 --metrics \
@@ -50,7 +50,7 @@ geth \
 --syncmode full \
 --port 30303 \
 --nousb \
---identity ${TS_HOSTNAME}-validator \
+--identity ${HOSTNAME}-validator \
 --nodekey /keystore/nodekey \
 --nodiscover \
 --metrics \

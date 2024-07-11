@@ -1,35 +1,16 @@
 ![Cover](.github/cover.png)
 
-# Haven1 Testnet Validator
+# Haven1 Validator
 
-Welcome to the Haven1 Testnet Validator repository! This repository
-serves as a guide for validators aiming to run validators on the Haven1
-Testnet.
+Welcome to the Haven1 Validator repository! This repository serves as a guide for validators to run validators on Haven1.
 
-Any future updates to this repository will be properly versioned and tagged for
-clarity.
+It is highly recommended to setup your node and processes on AWS as they require SGX enabled machines.
 
 This repository utilizes [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) as its base.
-
 Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/standalone/).
-
-For networking we use a vpn called [Tailscale](https://tailscale.com/download)
-
-## Introduction
-
-Haven1 is an EVM-compatible Layer 1 blockchain that seamlessly incorporates key principles of traditional finance into the Web3 ecosystem.
-
-The Haven1 Testnet provides a sandbox environment for developers to experiment with building applications on the Haven1 network, along with an opportunity to interact with a number of our unique features. This repository aims to assist validators to run their own validator instances for the Haven1 Testnet.
-
-It provides the essential set of instructions that validators will need to facilitate being part of the network.
-
-It provides a full testing suite with a number of helpful utility functions, deployment scripts, and tasks.
-
-All code included in this repository has been extensively commented to make it self-documenting and easy to comprehend.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Setup Validator Instance](#setup-validator-instance)
   - [Hardware Requirements](#hardware-requirements)
   - [Prerequisites](#prerequisites)
@@ -37,6 +18,10 @@ All code included in this repository has been extensively commented to make it s
   - [Sharing Instance Information](#sharing-instance-information)
   - [Spin up the Node](#spin-up-the-node)
   - [Test New Node](#test-node-is-validating)
+- [Setup Cosigner Instance](#setup-cosigner-instance)
+  - [Hardware Requirements](#hardware-requirements)
+  - [Prerequisites](#prerequisites)
+  - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
 - [Validator Activities](#validator-activities)
   - [Accepting a New Validator Node for Haven1 Network](#accepting-a-new-validator-node-for-haven1-network)
 
@@ -46,27 +31,24 @@ All code included in this repository has been extensively commented to make it s
 
 It is required to have a virtual machine with the following recommended requirements:
 
+AWS (t3.medium)
 - CPU: 2 vCPU cores
 - Memory: 4 GB
 - Storage: 100 GB
 
 ### Prerequisites
 
-1. Obtain following from the [Haven1 Team](mailto:contact@haven1.org).
+Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org).
     - genesis.json file
-    - TS_AUTHKEY
-2. Ensure you have [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed (version 14 or higher).
-3. Install [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
 
 ### Initial Setup and Key Generation
 
-1. We need the following packages in the machine:
+1. Install the following packages on your machine:
     - git
     - docker
     - docker-compose
     - npm
     - nodejs
-    - [tailscale](https://tailscale.com/download)
 
 2. Clone the repository in a folder which is mounted to a storage which can be expanded in the future as the Haven1 Network keeps adding blocks with time.
 
@@ -87,13 +69,11 @@ It is required to have a virtual machine with the following recommended requirem
     mkdir -p data keystore
     ```
 
-4. You need to make the follonwing changes in the `.env` file.
+4. You need to make the following changes in the `.env` file.
 
 | Variable    | Value                                |
 | ----------- | ------------------------------------ |
-| TS_HOSTNAME | Organisation Name                    |
-| TS_AUTHKEY  | `TS_AUTHKEY` Provided by haven1 team |
-| NETWORKID   | `810` for testnet  `8110` for devnet |
+| HOSTNAME    | Organisation Name                    |
 
 5. Place the `genesis.json` file provided in the `data` directory.
 
@@ -137,21 +117,13 @@ It is required to have a virtual machine with the following recommended requirem
     cat keystore/nodekey.pub
     ```
 
-9. Turn on tailscale node for IP assignment.
-
-    ```bash
-    export $(cat .env | xargs)
-    # root use is needed for this command
-    tailscale up --hostname=$TS_HOSTNAME --authkey=$TS_AUTHKEY --accept-routes=true --accept-dns=true --ssh
-    ```
-
 ### Sharing Instance Information
 
 1. Share the following information with the Haven1 team.
     - address
     - accountAddress
     - nodekey.pub
-    - `TS_HOSTNAME` value used
+    - `HOSTNAME` value used
 2. Wait for 24 hours for the validation process to be complete.
 
 ### Spin up the Node
@@ -163,12 +135,6 @@ It is required to have a virtual machine with the following recommended requirem
 
     ```bash
     ln -s static-nodes.json permissioned-nodes.json
-    ```
-
-- make sure tailscale is up
-
-    ```bash
-    tailscale status
     ```
 
 - You can spin up the node by running docker-compose in the validator folder
@@ -214,6 +180,72 @@ This number should increase over time as new blocks are added.
     ```javascript
     exit
     ```
+### Install the mpc-approver
+The MPC approver is used to approve specific transactions that require an additional layer of security. 
+
+1. Download the latest mpc-approver
+
+    ```bash
+    wget -O mpc-approver https://github.com/haven1network/mpc-approver/releases/download/1.11.0/mpc-approver-linux-x64
+    ```
+
+2. Create a self-signed TLS certificate
+    
+    ```bash
+    openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MyCertificate.crt -keyout MyKey.key
+    ```
+	- Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
+	- Set `Common Name` as the private IP of your instance
+
+
+3. Export the following variables
+
+    ```bash
+	export RPC_HAVEN1=https://rpc.haven1.org
+	export BRIDGE_CONTROLLER=0x6fF7796C02a276A88B2E4C3CAE7a219cF8Aa9603
+	export TLS_KEY="$(cat MyKey.key | base64)"
+	export TLS_CERT="$(cat MyCertificate.crt | base64)"
+    ```
+
+4. Give permissions and run 
+
+    ```bash
+    chmod +x mpc-approver
+    ./mpc-approver
+    ```
+
+## Setup Cosigner Instance
+
+### Hardware Requirements
+
+It is required to have a virtual machine with the following recommended requirements:
+
+AWS (c5a.xlarge)
+- CPU: 2 vCPU cores
+- Memory: 4 GB
+
+### Installation
+
+sudo su
+
+cd
+
+wget -O nitro-cosigner-v2.0.2.tar.gz https://fb-customers.s3.amazonaws.com/install-script/nitro-cosigner-v2.0.2.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA5QO5IU7PYPUJ7AU6%2F20240708%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240708T161147Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=649bfe4698aefdfcc6ea63a2bdcdea37bb7c957dd26459b1d0576be256f288b1
+
+tar -xzf nitro-cosigner-v2.0.2.tar.gz
+
+
+./install.sh
+
+
+Enter pairing token
+Enter S3 Bucket Name (Name only)
+Enter KMS ARN(Full ARN)
+Enter callback URL (ex. https://0.0.0.0)
+Enter the public key from Installing the Callback MyCertificate.crt
+
+Wait for an approval
+
 
 ## Validator Activities
 
