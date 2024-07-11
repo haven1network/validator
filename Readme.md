@@ -102,12 +102,18 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 
 ### Initial Setup and Key Generation
 
-1. Install the following packages on your machine:
-    - git
-    - docker
-    - docker-compose
-    - npm
-    - nodejs
+1. Install the following packages on your "validator" machine:
+    ```bash
+    sudo yum install git
+    sudo yum install docker
+    DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+    mkdir -p $DOCKER_CONFIG/cli-plugins
+    curl -SL https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+    chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    nvm install 14
+    ```
 
 2. Clone the repository in a folder which is mounted to a storage which can be expanded in the future as the Haven1 Network keeps adding blocks with time.
 
