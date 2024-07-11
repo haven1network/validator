@@ -98,21 +98,22 @@ AWS (t3.medium)
 ### Prerequisites
 
 Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
-- genesis.json file
+- genesis.base64 (base 64 encoded)
 
 ### Initial Setup and Key Generation
 
 1. Install the following packages on your "validator" machine:
     ```bash
-    sudo su
-    yum install git
-    yum install docker
+    sudo yum install git
+    sudo yum install docker
     DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
     mkdir -p $DOCKER_CONFIG/cli-plugins
     curl -SL https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
     chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+    chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    source ~/.bashrc
+    sudo systemctl start docker
     nvm install 14
     ```
 
@@ -141,12 +142,16 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     | ----------- | ------------------------------------ |
     | HOSTNAME    | Your Organisation Name               |
 
-5. Place the `genesis.json` file provided in the `data` directory.
+5. Copy the string inside `genesis.base64` and run the following command
+
+    ```bash
+        echo "<YOUR genesis.base64 STRING>" | base64 --decode > data/genesis.json
+    ```
 
 6. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool) to generate a new set of keys and node:
 
     ```bash
-    npm i -g quorum-genesis-tool
+    nvm use 14
     npx quorum-genesis-tool \
     --validators 1 \
     --members 0 \
@@ -195,6 +200,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     - accountAddress
     - nodekey.pub
     - `HOSTNAME` value used
+    - public IP
 2. Wait for 24 hours for the validation process to be complete.
 
 ### Spin up the Node
@@ -266,7 +272,7 @@ The MPC approver is used to approve specific transactions that require an additi
     openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MyCertificate.crt -keyout MyKey.key
     ```
 	- Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
-	- Set `Common Name` as the private IP of your instance
+	- Set `Common Name` as the private IP of your validator instance
 
 
 3. Export the following variables
@@ -287,7 +293,7 @@ The MPC approver is used to approve specific transactions that require an additi
 
 ## Setup Cosigner Instance
 
-### Hardware Requirements
+### Hardware Requirements (already installed through Infra Setup)
 
 It is required to have a virtual machine with the following recommended requirements:
 
@@ -297,26 +303,29 @@ AWS (c5a.xlarge)
 
 ### Installation
 
-sudo su
+1. Unzip the cosigner on your "cosigner" machine:
+    ```bash
+    sudo su
+    cd
+    wget -O nitro-cosigner-v2.0.1.tar.gz https://fb-customers-nitro.s3.amazonaws.com/nitro-cosigner-v2.0.1.tar.gz
+    tar -xzf nitro-cosigner-v2.0.1.tar.gz
+    ```
 
-cd
+2. Get the pairing token from the Haven1 Team and use it within 1 hour for step 3
 
-wget -O nitro-cosigner-v2.0.2.tar.gz https://fb-customers.s3.amazonaws.com/install-script/nitro-cosigner-v2.0.2.tar.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA5QO5IU7PYPUJ7AU6%2F20240708%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240708T161147Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=649bfe4698aefdfcc6ea63a2bdcdea37bb7c957dd26459b1d0576be256f288b1
+3. Install the cosigning process
 
-tar -xzf nitro-cosigner-v2.0.2.tar.gz
+    ```bash
+    ./install.sh
+    ```
 
+    - Enter pairing token (i.e. the string provided by the Haven1 team)
+    - Enter S3 Bucket Name (Name only)
+    - Enter KMS ARN (Full ARN)
+    - Enter callback URL (i.e. https://your-validator-private-IP)
+    - Enter the public key (i.e. copy paste MyCertificate.crt)
 
-./install.sh
-
-
-Enter pairing token
-Enter S3 Bucket Name (Name only)
-Enter KMS ARN(Full ARN)
-Enter callback URL (ex. https://0.0.0.0)
-Enter the public key from Installing the Callback MyCertificate.crt
-
-Wait for an approval
-
+4. Wait for an approval from the Haven1 team
 
 ## Validator Activities
 
@@ -369,6 +378,10 @@ For a new validator to be accepted in the network, all existing validators need 
     ```
 
 7. Update the Haven1 Team once you have performed the following actions.
+
+## Cosigner TAP rules approval process
+
+Coming soon..
 
 ## Debugging Validator FAQ
 
