@@ -104,8 +104,9 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 
 1. Install the following packages on your "validator" machine:
     ```bash
-    sudo yum install git
-    sudo yum install docker
+    sudo su
+    yum install git
+    yum install docker
     DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
     mkdir -p $DOCKER_CONFIG/cli-plugins
     curl -SL https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
@@ -337,7 +338,7 @@ For a new validator to be accepted in the network, all existing validators need 
 2. Attach a `geth` console to the node:
 
     ```bash
-    docker run -v $(pwd)/data:/data -it quorumengineering/quorum:22.7.1 attach /data/geth.ipc
+    docker exec -it validator-node-1 geth attach /data/geth.ipc
     ```
 
 3. Propose the new validator using the command `istanbul.propose(<address>, true)`. Replace `<address>` with the address of the new validator candidate node:
