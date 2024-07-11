@@ -10,7 +10,7 @@ This repository utilizes [Docker](https://docs.docker.com/) and [Docker Compose]
 Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/standalone/).
 
 ## Table of Contents
-
+- [Infra Setup](#infra-setup)
 - [Setup Validator Instance](#setup-validator-instance)
   - [Hardware Requirements](#hardware-requirements)
   - [Prerequisites](#prerequisites)
@@ -25,11 +25,68 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 - [Validator Activities](#validator-activities)
   - [Accepting a New Validator Node for Haven1 Network](#accepting-a-new-validator-node-for-haven1-network)
 
+## Infra Setup
+1. Open the AWS cloudshell 
+    ![alt text](cloudshell.png)
+
+2. Install terraform
+
+    ```bash
+    sudo yum install -y yum-utils
+    ```
+
+    ```bash
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    sudo yum -y install terraform
+    terraform -help
+    ```
+
+3. Download the terraform setup and unzip
+
+    ```bash
+    wget https://github.com/haven1network/validator/releases/download/v1.0.0/validator-terraform.tar.gz
+
+    tar -xvzf validator-terraform.tar.gz
+    ```
+
+4. Add your configs to the validator.tf
+
+    ```bash
+    module "validator" {
+        source          = "./modules/validator"
+        name            = "<YOUR ORGANISATION NAME HERE>"
+        subnet_id       = "<YOUR SUBNET HERE>"
+    }
+    ```
+
+5. Add your region to the provider.tf
+
+    ```bash
+    provider "aws" {
+        region = "<YOUR REGION HERE>"
+    }
+    ```
+
+5. Test your infra setup
+
+    ```bash
+    cd validator-terraform
+    terraform init
+    terraform plan
+    ```
+
+    **In case of any issues during step 6 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
+
+7. Install the infra setup
+
+    ```bash
+    terraform apply
+    ```
+    **In case of any issues during step 7 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
+
 ## Setup Validator Instance
 
-### Hardware Requirements
-
-It is required to have a virtual machine with the following recommended requirements:
+### Hardware Requirements (already installed through Infra Setup)
 
 AWS (t3.medium)
 - CPU: 2 vCPU cores
@@ -38,8 +95,8 @@ AWS (t3.medium)
 
 ### Prerequisites
 
-Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org).
-    - genesis.json file
+Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
+- genesis.json file
 
 ### Initial Setup and Key Generation
 
@@ -71,9 +128,9 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org).
 
 4. You need to make the following changes in the `.env` file.
 
-| Variable    | Value                                |
-| ----------- | ------------------------------------ |
-| HOSTNAME    | Organisation Name                    |
+    | Variable    | Value                                |
+    | ----------- | ------------------------------------ |
+    | HOSTNAME    | Your Organisation Name               |
 
 5. Place the `genesis.json` file provided in the `data` directory.
 
