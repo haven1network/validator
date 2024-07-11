@@ -181,6 +181,11 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     ```bash
     cat keystore/nodekey.pub
     ```
+9. Setup the envs
+
+    ```bash 
+    export $(cat .env | xargs)
+    ```
 
 ### Sharing Instance Information
 
