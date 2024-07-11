@@ -27,7 +27,6 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 
 ## Infra Setup
 1. Open the AWS cloudshell 
-    ![alt text](cloudshell.png)
 
 2. Install terraform
 
@@ -37,6 +36,9 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 
     ```bash
     sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    ```
+
+    ```bash
     sudo yum -y install terraform
     terraform -help
     ```
