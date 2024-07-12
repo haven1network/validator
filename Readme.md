@@ -109,6 +109,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 
 1. Install the following packages on your "validator" machine:
     ```bash
+    sudo su
     sudo yum install -y git
     sudo yum install -y docker
     DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
@@ -216,7 +217,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 - You can spin up the node by running docker-compose in the validator folder
 
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
 ### Test Node is Validating
