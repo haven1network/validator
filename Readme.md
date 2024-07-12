@@ -1,35 +1,16 @@
 ![Cover](.github/cover.png)
 
-# Haven1 Testnet Validator
+# Haven1 Validator
 
-Welcome to the Haven1 Testnet Validator repository! This repository
-serves as a guide for validators aiming to run validators on the Haven1
-Testnet.
+Welcome to the Haven1 Validator repository! This repository serves as a guide for validators to run validators on Haven1.
 
-Any future updates to this repository will be properly versioned and tagged for
-clarity.
+It is highly recommended to setup your node and processes on AWS as they require SGX enabled machines.
 
 This repository utilizes [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) as its base.
-
 Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/standalone/).
 
-For networking we use a vpn called [Tailscale](https://tailscale.com/download)
-
-## Introduction
-
-Haven1 is an EVM-compatible Layer 1 blockchain that seamlessly incorporates key principles of traditional finance into the Web3 ecosystem.
-
-The Haven1 Testnet provides a sandbox environment for developers to experiment with building applications on the Haven1 network, along with an opportunity to interact with a number of our unique features. This repository aims to assist validators to run their own validator instances for the Haven1 Testnet.
-
-It provides the essential set of instructions that validators will need to facilitate being part of the network.
-
-It provides a full testing suite with a number of helpful utility functions, deployment scripts, and tasks.
-
-All code included in this repository has been extensively commented to make it self-documenting and easy to comprehend.
-
 ## Table of Contents
-
-- [Introduction](#introduction)
+- [Infra Setup](#infra-setup)
 - [Setup Validator Instance](#setup-validator-instance)
   - [Hardware Requirements](#hardware-requirements)
   - [Prerequisites](#prerequisites)
@@ -37,36 +18,104 @@ All code included in this repository has been extensively commented to make it s
   - [Sharing Instance Information](#sharing-instance-information)
   - [Spin up the Node](#spin-up-the-node)
   - [Test New Node](#test-node-is-validating)
+- [Setup Cosigner Instance](#setup-cosigner-instance)
+  - [Hardware Requirements](#hardware-requirements)
+  - [Prerequisites](#prerequisites)
+  - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
 - [Validator Activities](#validator-activities)
   - [Accepting a New Validator Node for Haven1 Network](#accepting-a-new-validator-node-for-haven1-network)
 
+## Infra Setup
+1. Open the AWS cloudshell 
+
+2. Install terraform
+
+    ```bash
+    sudo yum install -y yum-utils
+    ```
+
+    ```bash
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    ```
+
+    ```bash
+    sudo yum -y install terraform
+    terraform -help
+    ```
+
+3. Download the terraform setup and unzip
+
+    ```bash
+    wget https://github.com/haven1network/validator/releases/download/v1.0.0/validator-terraform.tar.gz
+
+    tar -xvzf validator-terraform.tar.gz
+    ```
+
+4. Add your configs to the validator.tf
+
+    ```bash
+    module "validator" {
+        source          = "./modules/validator"
+        name            = "<YOUR ORGANISATION NAME HERE>"
+        subnet_id       = "<YOUR SUBNET HERE>"
+    }
+    ```
+
+5. Add your region to the provider.tf
+
+    ```bash
+    provider "aws" {
+        region = "<YOUR REGION HERE>"
+    }
+    ```
+
+5. Test your infra setup
+
+    ```bash
+    cd validator-terraform
+    terraform init
+    terraform plan
+    ```
+
+    **In case of any issues during step 6 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
+
+7. Install the infra setup
+
+    ```bash
+    terraform apply
+    ```
+    **In case of any issues during step 7 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
+
 ## Setup Validator Instance
 
-### Hardware Requirements
+### Hardware Requirements (already installed through Infra Setup)
 
-It is required to have a virtual machine with the following recommended requirements:
-
+AWS (t3.medium)
 - CPU: 2 vCPU cores
 - Memory: 4 GB
 - Storage: 100 GB
 
 ### Prerequisites
 
-1. Obtain following from the [Haven1 Team](mailto:contact@haven1.org).
-    - genesis.json file
-    - TS_AUTHKEY
-2. Ensure you have [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed (version 14 or higher).
-3. Install [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
+Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
+- genesis.base64 (base 64 encoded)
 
 ### Initial Setup and Key Generation
 
-1. We need the following packages in the machine:
-    - git
-    - docker
-    - docker-compose
-    - npm
-    - nodejs
-    - [tailscale](https://tailscale.com/download)
+1. Install the following packages on your "validator" machine:
+    ```bash
+    sudo yum install git
+    sudo yum install docker
+    DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+    mkdir -p $DOCKER_CONFIG/cli-plugins
+    curl -SL https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+    chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+    chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    source ~/.bashrc
+    sudo systemctl start docker
+    nvm install 14
+    ```
 
 2. Clone the repository in a folder which is mounted to a storage which can be expanded in the future as the Haven1 Network keeps adding blocks with time.
 
@@ -87,20 +136,22 @@ It is required to have a virtual machine with the following recommended requirem
     mkdir -p data keystore
     ```
 
-4. You need to make the follonwing changes in the `.env` file.
+4. You need to make the following changes in the `.env` file.
 
-| Variable    | Value                                |
-| ----------- | ------------------------------------ |
-| TS_HOSTNAME | Organisation Name                    |
-| TS_AUTHKEY  | `TS_AUTHKEY` Provided by haven1 team |
-| NETWORKID   | `810` for testnet  `8110` for devnet |
+    | Variable    | Value                                |
+    | ----------- | ------------------------------------ |
+    | HOSTNAME    | Your Organisation Name               |
 
-5. Place the `genesis.json` file provided in the `data` directory.
+5. Copy the string inside `genesis.base64` and run the following command
+
+    ```bash
+        echo "<YOUR genesis.base64 STRING>" | base64 --decode > data/genesis.json
+    ```
 
 6. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool) to generate a new set of keys and node:
 
     ```bash
-    npm i -g quorum-genesis-tool
+    nvm use 14
     npx quorum-genesis-tool \
     --validators 1 \
     --members 0 \
@@ -136,13 +187,10 @@ It is required to have a virtual machine with the following recommended requirem
     ```bash
     cat keystore/nodekey.pub
     ```
+9. Setup the envs
 
-9. Turn on tailscale node for IP assignment.
-
-    ```bash
+    ```bash 
     export $(cat .env | xargs)
-    # root use is needed for this command
-    tailscale up --hostname=$TS_HOSTNAME --authkey=$TS_AUTHKEY --accept-routes=true --accept-dns=true --ssh
     ```
 
 ### Sharing Instance Information
@@ -151,7 +199,8 @@ It is required to have a virtual machine with the following recommended requirem
     - address
     - accountAddress
     - nodekey.pub
-    - `TS_HOSTNAME` value used
+    - `HOSTNAME` value used
+    - public IP
 2. Wait for 24 hours for the validation process to be complete.
 
 ### Spin up the Node
@@ -163,12 +212,6 @@ It is required to have a virtual machine with the following recommended requirem
 
     ```bash
     ln -s static-nodes.json permissioned-nodes.json
-    ```
-
-- make sure tailscale is up
-
-    ```bash
-    tailscale status
     ```
 
 - You can spin up the node by running docker-compose in the validator folder
@@ -214,6 +257,75 @@ This number should increase over time as new blocks are added.
     ```javascript
     exit
     ```
+### Install the mpc-approver
+The MPC approver is used to approve specific transactions that require an additional layer of security. 
+
+1. Download the latest mpc-approver
+
+    ```bash
+    wget -O mpc-approver https://github.com/haven1network/mpc-approver/releases/download/1.11.0/mpc-approver-linux-x64
+    ```
+
+2. Create a self-signed TLS certificate
+    
+    ```bash
+    openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MyCertificate.crt -keyout MyKey.key
+    ```
+	- Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
+	- Set `Common Name` as the private IP of your validator instance
+
+
+3. Export the following variables
+
+    ```bash
+	export RPC_HAVEN1=https://rpc.haven1.org
+	export BRIDGE_CONTROLLER=0x6fF7796C02a276A88B2E4C3CAE7a219cF8Aa9603
+	export TLS_KEY="$(cat MyKey.key | base64)"
+	export TLS_CERT="$(cat MyCertificate.crt | base64)"
+    ```
+
+4. Give permissions and run 
+
+    ```bash
+    chmod +x mpc-approver
+    ./mpc-approver
+    ```
+
+## Setup Cosigner Instance
+
+### Hardware Requirements (already installed through Infra Setup)
+
+It is required to have a virtual machine with the following recommended requirements:
+
+AWS (c5a.xlarge)
+- CPU: 2 vCPU cores
+- Memory: 4 GB
+
+### Installation
+
+1. Unzip the cosigner on your "cosigner" machine:
+    ```bash
+    sudo su
+    cd
+    wget -O nitro-cosigner-v2.0.1.tar.gz https://fb-customers-nitro.s3.amazonaws.com/nitro-cosigner-v2.0.1.tar.gz
+    tar -xzf nitro-cosigner-v2.0.1.tar.gz
+    ```
+
+2. Get the pairing token from the Haven1 Team and use it within 1 hour for step 3
+
+3. Install the cosigning process
+
+    ```bash
+    ./install.sh
+    ```
+
+    - Enter pairing token (i.e. the string provided by the Haven1 team)
+    - Enter S3 Bucket Name (Name only)
+    - Enter KMS ARN (Full ARN)
+    - Enter callback URL (i.e. https://your-validator-private-IP)
+    - Enter the public key (i.e. copy paste MyCertificate.crt)
+
+4. Wait for an approval from the Haven1 team
 
 ## Validator Activities
 
@@ -235,7 +347,7 @@ For a new validator to be accepted in the network, all existing validators need 
 2. Attach a `geth` console to the node:
 
     ```bash
-    docker run -v $(pwd)/data:/data -it quorumengineering/quorum:22.7.1 attach /data/geth.ipc
+    docker exec -it validator-node-1 geth attach /data/geth.ipc
     ```
 
 3. Propose the new validator using the command `istanbul.propose(<address>, true)`. Replace `<address>` with the address of the new validator candidate node:
@@ -266,6 +378,10 @@ For a new validator to be accepted in the network, all existing validators need 
     ```
 
 7. Update the Haven1 Team once you have performed the following actions.
+
+## Cosigner TAP rules approval process
+
+Coming soon..
 
 ## Debugging Validator FAQ
 
