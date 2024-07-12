@@ -36,6 +36,7 @@ geth \
 --ws.api admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,qbft init /data/genesis.json
 
 geth \
+--nat extip:${IP} \
 --networkid ${NETWORKID} \
 --unlock $(cat /keystore/accountAddress) \
 --allow-insecure-unlock \
