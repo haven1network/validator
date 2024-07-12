@@ -20,10 +20,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
   - [Test New Node](#test-node-is-validating)
 - [Setup Cosigner Instance](#setup-cosigner-instance)
   - [Hardware Requirements](#hardware-requirements)
-  - [Prerequisites](#prerequisites)
-  - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
-- [Validator Activities](#validator-activities)
-  - [Accepting a New Validator Node for Haven1 Network](#accepting-a-new-validator-node-for-haven1-network)
+  - [Installation](#installation)
 
 ## Infra Setup
 1. Open the AWS cloudshell 
@@ -179,31 +176,6 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     rm -rf artifacts
     ```
 
-8. Get the validator accountAddress, address and nodekey.pub:
-
-    validator accountAddress
-
-    ```bash
-    cat keystore/accountAddress
-    ```
-
-    validator address
-
-    ```bash
-    cat keystore/address
-    ```
-
-    validator nodekey.pub
-
-    ```bash
-    cat keystore/nodekey.pub
-    ```
-9. Setup the envs
-
-    ```bash 
-    export $(cat .env | xargs)
-    ```
-
 ### Sharing Instance Information
 
 1. Share the following information with the Haven1 team.
@@ -212,11 +184,17 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     - nodekey.pub
     - `HOSTNAME` value used
     - public IP
-2. Wait for 24 hours for the validation process to be complete.
+
+    You can use this command, copy the result and send it to us:
+    ```bash
+    for file in keystore/accountAddress keystore/address keystore/nodekey.pub .env; do printf "%s: %s\n" "$file" "$(cat "$file")"; done
+    ```
+
+2. Wait for 24 hours for the integration process to be complete.
 
 ### Spin up the Node
 
-- Once the validation is complete you will recived the following files
+- Once the integration is complete you will recived the following files
     - static-nodes.json
     - permission-config.json
 - Place the files in the `data` folder and run the following command.
@@ -231,7 +209,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     docker compose up -d
     ```
 
-### Test Node is Validating
+### Test that the node is Validating as expected
 
 - Attach a `geth` console to the node:
 
@@ -338,62 +316,6 @@ AWS (c5a.xlarge)
     - Enter the public key (i.e. copy paste MyCertificate.crt)
 
 4. Wait for an approval from the Haven1 team
-
-## Validator Activities
-
-### Accepting a New Validator Node for Haven1 Network
-
-For a new validator to be accepted in the network, all existing validators need to perform a set of actions.
-
-#### When to Perform This Activity
-
-- This activity should be carried out when instructed by the Haven1 Team.
-- You will be provided with an updated `static-nodes.json` and the following information of the new validator.
-    - address
-    - accountAddress
-    - encodeID
-
-#### Steps to Add a New Validator
-
-1. Update your `data/static-nodes.json` file with the new one provided by the Haven1 Team.
-2. Attach a `geth` console to the node:
-
-    ```bash
-    docker exec -it validator-node-1 geth attach /data/geth.ipc
-    ```
-
-3. Propose the new validator using the command `istanbul.propose("0x<address>", true)`. Replace `<address>` with the address of the new validator candidate node:
-
-    ```javascript
-    istanbul.propose("0x<address>", true);
-    ```
-
-4. Add new node to the `HAVEN1` Organisation
-
-    ```javascript
-    quorumPermission.addNode("HAVEN1","<enodeId>", { from: eth.accounts[0] });
-    ```
-
-5. Approve New Admin
-
-    ```javascript
-    # First Admin need to start the proposal system for new admin
-    quorumPermission.assignAdminRole("HAVEN1", "<accountAddress>", "ADMIN", { from: eth.accounts[0] })
-    # Subsequent Admin need to approve the new admin
-    quorumPermission.approveAdminRole("HAVEN1", "<accountAddress>", { from: eth.accounts[0] });
-    ```
-
-6. Exit the console:
-
-    ```javascript
-    exit;
-    ```
-
-7. Update the Haven1 Team once you have performed the following actions.
-
-## Cosigner TAP rules approval process
-
-Coming soon..
 
 ## Debugging Validator FAQ
 
