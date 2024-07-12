@@ -40,6 +40,9 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 
     ```bash
     sudo yum -y install terraform
+    ```
+    
+    ```bash
     terraform -help
     ```
 
@@ -49,6 +52,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     wget https://github.com/haven1network/validator/releases/download/v1.0.0/validator-terraform.tar.gz
 
     tar -xvzf validator-terraform.tar.gz
+    cd validator-terraform
     ```
 
 4. Add your configs to the validator.tf
@@ -72,7 +76,6 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 5. Test your infra setup
 
     ```bash
-    cd validator-terraform
     terraform init
     terraform plan
     ```
@@ -101,6 +104,8 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 - genesis.base64 (base 64 encoded)
 
 ### Initial Setup and Key Generation
+<!-- Connect to the validator instance and run the following commands -->
+
 
 1. Install the following packages on your "validator" machine:
     ```bash
@@ -119,12 +124,6 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     ```
 
 2. Clone the repository in a folder which is mounted to a storage which can be expanded in the future as the Haven1 Network keeps adding blocks with time.
-
-    ```bash
-    git clone git@github.com:haven1network/validator.git
-    ```
-
-    If you dont have ssh setup use the http url
 
     ```bash
     git clone https://github.com/haven1network/validator.git
@@ -152,7 +151,6 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 6. Install and run the [Quorum Genesis Tool](https://www.npmjs.com/package/quorum-genesis-tool) to generate a new set of keys and node:
 
     ```bash
-    nvm use 14
     npx quorum-genesis-tool \
     --validators 1 \
     --members 0 \
