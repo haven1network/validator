@@ -50,8 +50,13 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 
     ```bash
     wget https://github.com/haven1network/validator/releases/download/v1.0.0/validator-terraform.tar.gz
+    ```
 
+    ```bash
     tar -xvzf validator-terraform.tar.gz
+    ```
+
+    ```bash
     cd validator-terraform
     ```
 
@@ -77,6 +82,9 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 
     ```bash
     terraform init
+    ```
+
+    ```bash
     terraform plan
     ```
 
@@ -87,6 +95,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     ```bash
     terraform apply
     ```
+
     **In case of any issues during step 7 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
 
 ## Setup Validator Instance
@@ -108,6 +117,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 
 
 1. Install the following packages on your "validator" machine:
+
     ```bash
     sudo su
     sudo yum install -y git
@@ -139,9 +149,10 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 
 4. You need to make the following changes in the `.env` file.
 
-    | Variable    | Value                                |
-    | ----------- | ------------------------------------ |
-    | HOSTNAME    | Your Organisation Name               |
+    | Variable    | Value                                 |
+    | ----------- | ------------------------------------- |
+    | HOSTNAME    | Your Organisation Name                |
+    | IP          | Public IP (Elastic IP in case of AWS) |
 
 5. Copy the string inside `genesis.base64` and run the following command
 
@@ -350,10 +361,10 @@ For a new validator to be accepted in the network, all existing validators need 
     docker exec -it validator-node-1 geth attach /data/geth.ipc
     ```
 
-3. Propose the new validator using the command `istanbul.propose(<address>, true)`. Replace `<address>` with the address of the new validator candidate node:
+3. Propose the new validator using the command `istanbul.propose("0x<address>", true)`. Replace `<address>` with the address of the new validator candidate node:
 
     ```javascript
-    istanbul.propose("<address>", true);
+    istanbul.propose("0x<address>", true);
     ```
 
 4. Add new node to the `HAVEN1` Organisation
@@ -366,9 +377,9 @@ For a new validator to be accepted in the network, all existing validators need 
 
     ```javascript
     # First Admin need to start the proposal system for new admin
-    quorumPermission.assignAdminRole("HAVEN1", "0xd141a28cdcc1b939926b56dcd394a02c11adb416", "ADMIN", { from: eth.accounts[0] })
+    quorumPermission.assignAdminRole("HAVEN1", "<accountAddress>", "ADMIN", { from: eth.accounts[0] })
     # Subsequent Admin need to approve the new admin
-    quorumPermission.approveAdminRole("HAVEN1", "0xd141a28cdcc1b939926b56dcd394a02c11adb416", { from: eth.accounts[0] });
+    quorumPermission.approveAdminRole("HAVEN1", "<accountAddress>", { from: eth.accounts[0] });
     ```
 
 6. Exit the console:
