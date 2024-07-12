@@ -299,7 +299,7 @@ The MPC approver is used to approve specific transactions that require an additi
 
     ```bash
     chmod +x mpc-approver
-    ./mpc-approver
+    sudo nohup ./mpc-approver &
     ```
 
 ## Setup Cosigner Instance
