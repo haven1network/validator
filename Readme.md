@@ -334,6 +334,7 @@ AWS (c5a.xlarge)
     - Enter S3 Bucket Name (Name only)
     - Enter KMS ARN (Full ARN)
     - Enter callback URL (i.e. https://your-validator-private-IP)
+    - Enter 2 ((2) Certificate)
     - Enter the public key (i.e. copy paste MyCertificate.crt)
 
 4. Wait for an approval from the Haven1 team
