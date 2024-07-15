@@ -252,7 +252,7 @@ The MPC approver is used to approve specific transactions that require an additi
 1. Download the latest mpc-approver
 
     ```bash
-    wget -O mpc-approver https://github.com/haven1network/mpc-approver/releases/download/1.11.0/mpc-approver-linux-x64
+    wget -O mpc-approver https://github.com/haven1network/validator/releases/download/v1.11.0/mpc-approver-linux-x64
     ```
 
 2. Create a self-signed TLS certificate
@@ -313,7 +313,7 @@ AWS (c5a.xlarge)
     - Enter KMS ARN (Full ARN)
     - Enter callback URL (i.e. https://your-validator-private-IP)
     - Enter 2 ((2) Certificate)
-    - Enter the public key (i.e. copy paste MyCertificate.crt)
+    - Enter the public key (i.e. copy paste contents of MyCertificate.crt)
 
 4. Wait for an approval from the Haven1 team
 
