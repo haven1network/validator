@@ -1,26 +1,49 @@
 # Adding a New Validator Node to Haven1 Network
 
+For a new validator to be accepted in the network, all existing validators need to perform a set of actions.
+
 ## When to Perform This Activity
 
 - This activity should be carried out when instructed by the Haven1 Team.
+- You will be provided with an updated `static-nodes.json` and the following information of the new validator.
+  - address
+  - accountAddress
+  - encodeID
 
 ## Steps to Add a New Validator
 
-1. Update your `static-nodes.json` file with the new one provided by the team.
+1. Update your `static-nodes.json` file with the new one provided by the Haven1 Team.
 2. Attach a `geth` console to the node:
 
     ```bash
-    docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
+    docker exec -it validator-node-1 geth attach /data/geth.ipc
     ```
 
-3. Propose the new validator using the command `istanbul.propose(<address>, true)`. Replace `<address>` with the address of the new validator candidate node:
+3. Propose the new validator using the command `istanbul.propose("0x<address>", true)`. Replace `<address>` with the address of the new validator candidate node:
 
     ```javascript
-    istanbul.propose("0x2aabbc1bb9bacef60a09764d1a1f4f04a47885c1", true);
+    istanbul.propose("0x<address>", true);
     ```
 
-4. Exit the console:
+4. Add new node to the `HAVEN1` Organisation
+
+    ```javascript
+    quorumPermission.addNode("HAVEN1","<enodeId>", { from: eth.accounts[0] });
+    ```
+
+5. Approve New Admin
+
+    ```javascript
+    # First Admin need to start the proposal system for new admin
+    quorumPermission.assignAdminRole("HAVEN1", "<accountAddress>", "ADMIN", { from: eth.accounts[0] })
+    # All Admin need to approve the new admin
+    quorumPermission.approveAdminRole("HAVEN1", "<accountAddress>", { from: eth.accounts[0] });
+    ```
+
+6. Exit the console:
 
     ```javascript
     exit;
     ```
+
+7. Update the Haven1 Team once you have performed the following actions.
