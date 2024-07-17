@@ -311,9 +311,17 @@ AWS (c5a.xlarge)
     - Enter pairing token (i.e. the string provided by the Haven1 team)
     - Enter S3 Bucket Name (Name only)
     - Enter KMS ARN (Full ARN)
-    - Enter callback URL (i.e. https://your-validator-private-IP)
-    - Enter 2 ((2) Certificate)
-    - Enter the public key (i.e. copy paste contents of MyCertificate.crt)
+    - Enter callback URL (leave it empty)
+
+
+    ```bash
+    ./fireblocks/cosigner callback-update
+    ```
+
+    - Enter Callback URL (i.e. https://your-validator-private-IP)
+    - Enter 2 for certificate
+    - Enter y for automatically fetching the certificate
+
 
 4. Wait for an approval from the Haven1 team
 
