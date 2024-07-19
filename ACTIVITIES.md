@@ -50,6 +50,10 @@ For a new validator to be accepted in the network, all existing validators need 
 
 7. Update the Haven1 Team once you have performed the following actions.
 
-## Cosigner TAP rules approval process
+## Cosigner config changes approval process
 
 Coming soon..
+
+## Config changes proposal
+
+Contact the Haven1 team to get instructions on how to make a config change proposal
