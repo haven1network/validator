@@ -17,7 +17,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
   - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
   - [Sharing Instance Information](#sharing-instance-information)
   - [Spin up the Node](#spin-up-the-node)
-  - [Test New Node](#test-node-is-validating)
+  - [Test that the node is validating as expected](#test-node-is-validating)
 - [Setup Cosigner Instance](#setup-cosigner-instance)
   - [Hardware Requirements](#hardware-requirements)
   - [Installation](#installation)
@@ -209,7 +209,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     docker compose up -d
     ```
 
-### Test that the node is Validating as expected
+### Test that the node is validating as expected
 
 - Attach a `geth` console to the node:
 
@@ -254,8 +254,14 @@ The MPC approver is used to approve specific transactions that require an additi
     ```bash
     wget -O mpc-approver https://github.com/haven1network/validator/releases/download/v1.11.0/mpc-approver-linux-x64
     ```
+2. Create the approver keys
+   ```bash
+   cd mpc-approver
+   openssl req -new -newkey rsa:4096 -nodes -keyout approver_secret.key -out approver.csr -subj '/O=HAVEN1'
+   ```
+   And share with Haven1 team the file approver.csr
 
-2. Create a self-signed TLS certificate
+3. Create a self-signed TLS certificate
     
     ```bash
     openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MyCertificate.crt -keyout MyKey.key
@@ -264,7 +270,7 @@ The MPC approver is used to approve specific transactions that require an additi
 	- Set `Common Name` as the private IP of your validator instance
 
 
-3. Export the following variables
+4. Export the following variables
 
     ```bash
 	export RPC_HAVEN1=https://rpc.haven1.org
@@ -273,7 +279,7 @@ The MPC approver is used to approve specific transactions that require an additi
 	export TLS_CERT="$(cat MyCertificate.crt | base64)"
     ```
 
-4. Give permissions and run 
+5. Give permissions and run 
 
     ```bash
     chmod +x mpc-approver
