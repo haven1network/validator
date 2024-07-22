@@ -4,7 +4,7 @@ services:
   node:
     env_file:
       - .env
-    image: quorumengineering/quorum:22.7.1
+    image: quorumengineering/quorum:23.4.0
     volumes:
       - ./docker-entrypoint.sh:/docker-entrypoint.sh
       - ./data:/data
