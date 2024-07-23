@@ -52,9 +52,9 @@ For a new validator to be accepted in the network, all existing validators need 
 
 ## Cosigner config changes approval process
 
-1. You will be given a `.h1t` file. The format of the file is `<base64 data>.<signature>`.
+1. You will be given a `.h1t` file. The format of the file is `<base64 data>.<signature>`
 2. Verify the rule in step 1 by decoding the `<base64 data>`
-3. Download and place the file into rules directory
+3. Download and place the file into rules directory next to the `mpc-approver` executable
 ```bash
 wget -P rules <h1t_url>
 ```
