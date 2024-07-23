@@ -4,7 +4,7 @@
 
 Welcome to the Haven1 Validator repository! This repository serves as a guide for validators to run validators on Haven1.
 
-We highly recommend setting up your node and processes on AWS because they require Nitro enabled machines.
+We highly recommend setting up your node and processes on AWS because this guide requires Nitro enabled machines.
 
 This repository uses [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) as its base.
 Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/standalone/).
