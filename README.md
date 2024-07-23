@@ -302,8 +302,8 @@ AWS (c5a.xlarge)
     ```bash
     sudo su
     cd
-    wget -O nitro-cosigner-v2.0.1.tar.gz https://fb-customers-nitro.s3.amazonaws.com/nitro-cosigner-v2.0.1.tar.gz
-    tar -xzf nitro-cosigner-v2.0.1.tar.gz
+    wget -O nitro-cosigner-v2.0.2.tar.gz https://fb-customers-nitro.s3.amazonaws.com/nitro-cosigner-v2.0.2.tar.gz
+    tar -xzf nitro-cosigner-v2.0.2.tar.gz
     ```
 
 2. Get the pairing token from the Haven1 Team and use it within 1 hour for step 3
