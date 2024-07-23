@@ -252,7 +252,7 @@ The MPC approver is used to approve specific transactions that require an additi
 1. Download the latest mpc-approver
 
     ```bash
-    wget -O mpc-approver https://github.com/haven1network/validator/releases/download/v1.11.0/mpc-approver-linux-x64
+    wget -O mpc-approver https://github.com/haven1network/validator/releases/download/v1.14.0/mpc-approver-linux-x64
     ```
 2. Create the approver keys
    ```bash
