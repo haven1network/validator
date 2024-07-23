@@ -6,8 +6,8 @@ For a new validator to be accepted in the network, all existing validators need 
 
 #### When to Perform This Activity
 
-- This activity should be carried out when instructed by the Haven1 Team.
-- You will be provided with an updated `static-nodes.json` and the following information of the new validator.
+- Carry out this activity when the Haven1 Team instructs you.
+- We will provide you with an updated `static-nodes.json` and the following information of the new validator.
     - address
     - accountAddress
     - encodeID
@@ -36,7 +36,7 @@ For a new validator to be accepted in the network, all existing validators need 
 5. Approve New Admin
 
     ```javascript
-    # First Admin need to start the proposal system for new admin
+    # First Admin needs to start the proposal system for new admin
     quorumPermission.assignAdminRole("HAVEN1", "<accountAddress>", "ADMIN", { from: eth.accounts[0] })
     # Subsequent Admin need to approve the new admin
     quorumPermission.approveAdminRole("HAVEN1", "<accountAddress>", { from: eth.accounts[0] });
@@ -52,7 +52,7 @@ For a new validator to be accepted in the network, all existing validators need 
 
 ## Cosigner config changes approval process
 
-1. You will be given a `.h1t` file. The format of the file is `<base64 data>.<signature>`
+1. We will give you a `.h1t` file when a proposal is made. The format of the file is `<base64 data>.<signature>`
 2. Verify the rule in step 1 by decoding the `<base64 data>`
 3. Download and place the file into rules directory next to the `mpc-approver` executable
 ```bash
@@ -61,4 +61,4 @@ wget -P rules <h1t_url>
 
 ## Config changes proposal
 
-Contact the Haven1 team to get instructions on how to make a config change proposal
+Reach out to the Haven1 team for guidance on how to create a configuration change proposal.
