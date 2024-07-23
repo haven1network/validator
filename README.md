@@ -259,27 +259,28 @@ The MPC approver is used to approve specific transactions that require an additi
    cd mpc-approver
    openssl req -new -newkey rsa:4096 -nodes -keyout approver_secret.key -out approver.csr -subj '/O=HAVEN1'
    ```
-   And share with Haven1 team the file approver.csr
+   And share with Haven1 team the file `approver.csr`
+   Do not share and keep the file `approver_secret.key` safe
 
-3. Create a self-signed TLS certificate
+4. Create a self-signed TLS certificate
     
     ```bash
-    openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MyCertificate.crt -keyout MyKey.key
+    openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MpcCertificate.crt -keyout MpcKey.key
     ```
 	- Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
 	- Set `Common Name` as the private IP of your validator instance
 
 
-4. Export the following variables
+5. Export the following variables
 
     ```bash
 	export RPC_HAVEN1=https://rpc.haven1.org
 	export BRIDGE_CONTROLLER=0x6fF7796C02a276A88B2E4C3CAE7a219cF8Aa9603
-	export TLS_KEY="$(cat MyKey.key | base64)"
-	export TLS_CERT="$(cat MyCertificate.crt | base64)"
+	export TLS_KEY="$(cat MpcKey.key | base64)"
+	export TLS_CERT="$(cat MpcCertificate.crt | base64)"
     ```
 
-5. Give permissions and run 
+6. Give permissions and run 
 
     ```bash
     chmod +x mpc-approver
