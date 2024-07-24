@@ -4,9 +4,9 @@
 
 Welcome to the Haven1 Validator repository! This repository serves as a guide for validators to run validators on Haven1.
 
-It is highly recommended to setup your node and processes on AWS as they require SGX enabled machines.
+We highly recommend setting up your node and processes on AWS because this guide requires Nitro enabled machines.
 
-This repository utilizes [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) as its base.
+This repository uses [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) as its base.
 Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/standalone/).
 
 ## Table of Contents
@@ -23,9 +23,9 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
   - [Installation](#installation)
 
 ## Infra Setup
-1. Open the AWS cloudshell 
+1. Open the AWS CloudShell 
 
-2. Install terraform
+2. Install Terraform
 
     ```bash
     sudo yum install -y yum-utils
@@ -43,7 +43,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     terraform -help
     ```
 
-3. Download the terraform setup and unzip
+3. Download the Terraform setup and unzip
 
     ```bash
     wget https://github.com/haven1network/validator/releases/download/v1.0.0/validator-terraform.tar.gz
@@ -85,7 +85,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     terraform plan
     ```
 
-    **In case of any issues during step 6 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
+    **In case of any issues during step 6, please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
 
 7. Install the infra setup
 
@@ -93,7 +93,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     terraform apply
     ```
 
-    **In case of any issues during step 7 please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
+    **In case of any issues during step 7, please reach out to the [Haven1 Team](mailto:contact@haven1.org)**
 
 ## Setup Validator Instance
 
@@ -106,7 +106,7 @@ AWS (t3.medium)
 
 ### Prerequisites
 
-Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
+Get the following file from the [Haven1 Team](mailto:contact@haven1.org)
 - genesis.base64 (base 64 encoded)
 
 ### Initial Setup and Key Generation
@@ -131,7 +131,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     nvm use 20
     ```
 
-2. Clone the repository in a folder which is mounted to a storage which can be expanded in the future as the Haven1 Network keeps adding blocks with time.
+2. Clone the repository in a folder which is mounted to a storage which can be expanded as the Haven1 Network keeps adding blocks over time.
 
     ```bash
     git clone https://github.com/haven1network/validator.git
@@ -144,7 +144,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     mkdir -p data keystore
     ```
 
-4. You need to make the following changes in the `.env` file.
+4. You need to change the `.env` file.
 
     | Variable    | Value                                 |
     | ----------- | ------------------------------------- |
@@ -194,7 +194,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
 
 ### Spin up the Node
 
-- Once the integration is complete you will recived the following files
+- Once the integration is complete, you will receive the following files:
     - static-nodes.json
     - permission-config.json
 - Place the files in the `data` folder and run the following command.
@@ -223,7 +223,7 @@ Obtain the following file from the [Haven1 Team](mailto:contact@haven1.org)
     eth.syncing
     ```
 
-- Once syncing is completed. Verify Mining Status. It should return true if mining is enabled on validators.
+- Once syncing is completed. Verify Mining Status. It should return true if mining is enabled on your validator.
 
     ```javascript
     eth.mining
@@ -337,7 +337,7 @@ AWS (c5a.xlarge)
 *Problem:* Geth Connection Refused running `attach` command
 *Possible Solution:* 
     - Turn off your container
-    - remove geth.ipc if you still have a stray `geth.ipc` remaining then remove it.
+    - remove geth.ipc if you still have a stray `geth.ipc` remaining, then remove it.
     - Start the container again and retry again
     ```bash
     docker-compose down
