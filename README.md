@@ -109,6 +109,8 @@ AWS (t3.medium)
 Get the following file from the [Haven1 Team](mailto:contact@haven1.org)
 - genesis.base64 (base 64 encoded)
 
+Provide the address where you would like your rewards to be sent ([Haven1 Team](mailto:contact@haven1.org))
+
 ### Initial Setup and Key Generation
 <!-- Connect to the validator instance and run the following commands -->
 
