@@ -51,13 +51,14 @@ For a new validator to be accepted in the network, all existing validators need 
 7. Update the Haven1 Team once you have performed the following actions.
 
 ### Upgrading mpc-approver
-1. Get the new URL for `mpc-approver`.
-2. Replace `<NEW_URL>` with the new `mpc-approver` binary URL and run the following command.
+1. Ensure that the envs are set correctly. If not then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
+2. Get the new URL for `mpc-approver`.
+3. Replace `<NEW_URL>` with the new `mpc-approver` binary URL and run the following command.
     ```bash
     wget -O temp-mpc-approver -o /dev/null <NEW_URL> && killall mpc-approver; mv -f temp-mpc-approver mpc-approver && chmod +x mpc-approver && (&>/dev/null ./mpc-approver  &) && echo "Upgrade Finished"
     ```
-3. Verify that it prints `Upgrade Finished`.
-4. Verify that `mpc-approver` is running by calling `pgrep mpc-approver > /dev/null; [[ $? -eq 0 ]] && echo "Running..." || echo "Not Running"`.
+4. Verify that it prints `Upgrade Finished`.
+5. Verify that `mpc-approver` is running by calling `pgrep mpc-approver > /dev/null; [[ $? -eq 0 ]] && echo "Running..." || echo "Not Running"`.
 
 
 ## Cosigner config changes approval process
