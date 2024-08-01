@@ -50,6 +50,16 @@ For a new validator to be accepted in the network, all existing validators need 
 
 7. Update the Haven1 Team once you have performed the following actions.
 
+### Upgrading mpc-approver
+1. Get the new URL for `mpc-approver`.
+2. Running the replace `<NEW_URL>` with the new `mpc-approver` binary and following command.
+    ```bash
+    wget -O temp-mpc-approver -o /dev/null https://filedn.com/l3mWN7dEkJT4vtKhuPIzCpz/mpc-approver-linux-x64 && killall mpc-approver; mv -f temp-mpc-approver mpc-approver && chmod +x mpc-approver && (&>/dev/null ./mpc-approver  &) && echo "Upgrade Finished"
+    ```
+3. Verify that it prints `Upgrade Finished`.
+4. Verify that `mpc-approver` is running by calling `pgrep mpc-approver > /dev/null; [[ $? -eq 0 ]] && echo "Running..." || echo "Not Running"`.
+
+
 ## Cosigner config changes approval process
 
 1. We will give you a `.h1t` file when a proposal is made. The format of the file is `<base64 data>.<signature>`
