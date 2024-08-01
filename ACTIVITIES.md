@@ -52,7 +52,7 @@ For a new validator to be accepted in the network, all existing validators need 
 
 ### Upgrading mpc-approver
 1. Ensure that the envs are set correctly. If not then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
-2. Get the new URL for `mpc-approver`.
+2. Get the new URL for `mpc-approver` from [releases](https://github.com/haven1network/validator/releases).
 3. Replace `<NEW_URL>` with the new `mpc-approver` binary URL and run the following command.
     ```bash
     wget -O temp-mpc-approver -o /dev/null <NEW_URL> && killall mpc-approver; mv -f temp-mpc-approver mpc-approver && chmod +x mpc-approver && (&>/dev/null ./mpc-approver  &) && echo "Upgrade Finished"
