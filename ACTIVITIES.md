@@ -26,23 +26,8 @@ For a new validator to be accepted in the network, all existing validators need 
     ```javascript
     istanbul.propose("0x<address>", true);
     ```
-
-4. Add new node to the `HAVEN1` Organisation
-
-    ```javascript
-    quorumPermission.addNode("HAVEN1","<enodeId>", { from: eth.accounts[0] });
-    ```
-
-5. Approve New Admin
-
-    ```javascript
-    # First Admin needs to start the proposal system for new admin
-    quorumPermission.assignAdminRole("HAVEN1", "<accountAddress>", "ADMIN", { from: eth.accounts[0] })
-    # Subsequent Admin need to approve the new admin
-    quorumPermission.approveAdminRole("HAVEN1", "<accountAddress>", { from: eth.accounts[0] });
-    ```
-
-6. Exit the console:
+    
+4. Exit the console:
 
     ```javascript
     exit;
