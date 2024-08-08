@@ -53,12 +53,12 @@ For a new validator to be accepted in the network, all existing validators need 
 ### Steps to interface with the permission system
 1. We will reach out to you when there's a change that is being proposed.
 2. Login into your validator safe account.
-3. Go to transaction ![View Transaction](https://github.com/user-attachments/assets/d3d80357-71a9-4069-aa7a-e51552612444)
-4. You should see the pending transaction ![Pending Transaction](https://github.com/user-attachments/assets/a50bc501-3bc6-4a44-ae2c-d49d1c9e261a)
+3. Go to transaction ![View Transaction](https://github.com/user-attachments/assets/d3d80357-71a9-4069-aa7a-e51552612444 | width=100)
+4. You should see the pending transaction ![Pending Transaction](https://github.com/user-attachments/assets/a50bc501-3bc6-4a44-ae2c-d49d1c9e261a | width=100)
 5. Click on the transaction to see the pending details
 6. Verify if the transaction is legitimate if not then `Reject` the transaction.
 7. Click on `Confirm` if the transaction appears to be legitimate.
-8. Click on `Execute` to do the transaction right away, this only appears if the required signers threshold has already been reached. If the required signers has not been reach, you can click on `Sign` to approve the transaction. ![Execute and Sign](https://github.com/user-attachments/assets/474f4f4f-44f2-46ee-8d63-8170f84b0408)
+8. Click on `Execute` to do the transaction right away, this only appears if the required signers threshold has already been reached. If the required signers has not been reach, you can click on `Sign` to approve the transaction. ![Execute and Sign](https://github.com/user-attachments/assets/474f4f4f-44f2-46ee-8d63-8170f84b0408 | width=100)
 
 ### Upgrading mpc-approver
 1. Ensure that the envs are set correctly. If not then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
