@@ -252,6 +252,7 @@ This number should increase over time as new blocks are added.
     ```javascript
     exit
     ```
+
 ### Install the mpc-approver
 The MPC approver is used to approve specific transactions that require an additional layer of security. 
 
@@ -260,24 +261,28 @@ The MPC approver is used to approve specific transactions that require an additi
     ```bash
     wget -O mpc-approver https://github.com/haven1network/validator/releases/download/v1.14.0/mpc-approver-linux-x64
     ```
+
 2. Create the approver keys
+
    ```bash
    cd mpc-approver
    openssl req -new -newkey rsa:4096 -nodes -keyout approver_secret.key -out approver.csr -subj '/O=HAVEN1'
    ```
+
    And share with Haven1 team the file `approver.csr`
+
    Do not share and keep the file `approver_secret.key` safe
 
-4. Create a self-signed TLS certificate
-    
+3. Create a self-signed TLS certificate
+
     ```bash
     openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MpcCertificate.crt -keyout MpcKey.key
     ```
-	- Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
-	- Set `Common Name` as the private IP of your validator instance
 
+    - Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
+    - Set `Common Name` as the private IP of your validator instance
 
-5. Export the following variables
+4. Export the following variables
 
     ```bash
 	export RPC_HAVEN1=https://rpc.haven1.org
@@ -286,7 +291,7 @@ The MPC approver is used to approve specific transactions that require an additi
 	export TLS_CERT="$(cat MpcCertificate.crt | base64)"
     ```
 
-6. Give permissions and run 
+5. Give permissions and run 
 
     ```bash
     chmod +x mpc-approver
