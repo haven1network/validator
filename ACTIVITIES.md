@@ -50,12 +50,13 @@ For a new validator to be accepted in the network, all existing validators need 
 2. Click on `New transaction`  ![New Transaction](https://github.com/user-attachments/assets/5eed8835-2932-4ce4-9757-f372b7c9fd57)
 3. Click on `Transaction Builder` ![Transaction Builder](https://github.com/user-attachments/assets/83043f04-3d01-43d7-b2e4-89f062004ae8)
 4. Paste in the required ABI ![ABI](https://github.com/user-attachments/assets/07bbcb87-c55b-4936-8820-63502e482354)
-5. Click on `Add transaction`
-6. Click on `Create Batch`
-7. Click on `Send Batch`
-8. Click on `Sign`
-9. Sign the transaction using Metamask or your wallet of choice
-10. Wait for other parties to approve and send the final transaction.
+5. Input the values of the method call.
+6. Click on `Add transaction`
+7. Click on `Create Batch`
+8. Click on `Send Batch`
+9. Click on `Sign`
+10. Sign the transaction using Metamask or your wallet of choice
+11. Wait for other parties to approve and send the final transaction.
 
 ### Upgrading mpc-approver
 1. Ensure that the envs are set correctly. If not then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
