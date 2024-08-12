@@ -35,7 +35,7 @@ For a new validator to be accepted in the network, all existing validators need 
 
 7. Update the Haven1 Team once you have performed the following actions.
 
-### Steps to interface with the permission system
+### Approving a change on enhanced permissioning variables
 1. We will reach out to you when there's a change that is being proposed.
 2. Login into your validator safe account.
 3. Go to transaction ![View Transaction](https://github.com/user-attachments/assets/d3d80357-71a9-4069-aa7a-e51552612444)
@@ -44,6 +44,18 @@ For a new validator to be accepted in the network, all existing validators need 
 6. Verify if the transaction is legitimate if not then `Reject` the transaction.
 7. Click on `Confirm` if the transaction appears to be legitimate.
 8. Click on `Execute` to do the transaction right away, this only appears if the required signers threshold has already been reached. If the required signers has not been reach, you can click on `Sign` to approve the transaction. ![Execute and Sign](https://github.com/user-attachments/assets/474f4f4f-44f2-46ee-8d63-8170f84b0408)
+
+### Proposing a change on enhanced permissioning
+1. Login into your validator safe account.
+2. Click on `New transaction`  ![New Transaction](https://github.com/user-attachments/assets/5eed8835-2932-4ce4-9757-f372b7c9fd57)
+3. Click on `Transaction Builder` ![Transaction Builder](https://github.com/user-attachments/assets/83043f04-3d01-43d7-b2e4-89f062004ae8)
+4. Paste in the required ABI ![ABI](https://github.com/user-attachments/assets/07bbcb87-c55b-4936-8820-63502e482354)
+5. Click on `Add transaction`
+6. Click on `Create Batch`
+7. Click on `Send Batch`
+8. Click on `Sign`
+9. Sign the transaction using Metamask or your wallet of choice
+10. Wait for other parties to approve and send the final transaction.
 
 ### Upgrading mpc-approver
 1. Ensure that the envs are set correctly. If not then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
