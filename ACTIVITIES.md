@@ -35,7 +35,7 @@ For a new validator to be accepted in the network, all existing validators need 
 
 7. Update the Haven1 Team once you have performed the following actions.
 
-### Approving a change on enhanced permissioning variables
+### Approving a change on enhanced permissioning
 1. We will reach out to you when there's a change that is being proposed.
 2. Login into your validator safe account.
 3. Go to transaction ![View Transaction](https://github.com/user-attachments/assets/d3d80357-71a9-4069-aa7a-e51552612444)
