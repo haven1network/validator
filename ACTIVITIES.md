@@ -35,31 +35,31 @@ For a new validator to be accepted in the network, all existing validators need 
 
 7. Update the Haven1 Team once you have performed the following actions.
 
-### Approving a change on enhanced permissioning
+### Approving a change in enhanced permissioning
 1. We will reach out to you when there's a change that is being proposed.
 2. Login into your validator safe account.
 3. Go to transaction ![View Transaction](https://github.com/user-attachments/assets/d3d80357-71a9-4069-aa7a-e51552612444)
 4. You should see the pending transaction ![Pending Transaction](https://github.com/user-attachments/assets/a50bc501-3bc6-4a44-ae2c-d49d1c9e261a)
 5. Click on the transaction to see the pending details
-6. Verify if the transaction is legitimate if not then `Reject` the transaction.
+6. Verify if the transaction is legitimate, if not then `Reject` the transaction.
 7. Click on `Confirm` if the transaction appears to be legitimate.
-8. Click on `Execute` to do the transaction right away, this only appears if the required signers threshold has already been reached. If the required signers has not been reach, you can click on `Sign` to approve the transaction. ![Execute and Sign](https://github.com/user-attachments/assets/474f4f4f-44f2-46ee-8d63-8170f84b0408)
+8. Click on `Execute` to do the transaction right away. This only appears if the required signer's threshold has already been reached. If the required signers have not been reached, you can click on `Sign` to approve the transaction. ![Execute and Sign](https://github.com/user-attachments/assets/474f4f4f-44f2-46ee-8d63-8170f84b0408)
 
-### Proposing a change on enhanced permissioning
+### Proposing a change in enhanced permissioning
 1. Login into your validator safe account.
 2. Click on `New transaction`  ![New Transaction](https://github.com/user-attachments/assets/5eed8835-2932-4ce4-9757-f372b7c9fd57)
 3. Click on `Transaction Builder` ![Transaction Builder](https://github.com/user-attachments/assets/83043f04-3d01-43d7-b2e4-89f062004ae8)
 4. Paste in the required ABI ![ABI](https://github.com/user-attachments/assets/07bbcb87-c55b-4936-8820-63502e482354)
 5. Input the values of the method call.
-6. Click on `Add transaction`
-7. Click on `Create Batch`
-8. Click on `Send Batch`
-9. Click on `Sign`
-10. Sign the transaction using Metamask or your wallet of choice
+6. Click on `Add transaction`.
+7. Click on `Create Batch`.
+8. Click on `Send Batch`.
+9. Click on `Sign`.
+10. Sign the transaction using Metamask or your wallet of choice.
 11. Wait for other parties to approve and send the final transaction.
 
 ### Upgrading mpc-approver
-1. Ensure that the envs are set correctly. If not then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
+1. Ensure that the envs are set correctly. If not, then please refer to [Installing MPC Approver](https://github.com/haven1network/validator/blob/main/README.md#install-the-mpc-approver).
 2. Get the new URL for `mpc-approver` from [releases](https://github.com/haven1network/validator/releases).
 3. Replace `<NEW_URL>` with the new `mpc-approver` binary URL and run the following command.
     ```bash
