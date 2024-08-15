@@ -19,7 +19,7 @@
     ```javascript
     istanbul.propose("0x<address>", true);
     ```
-4. In order to complete the node addition, you will need to use your SAFE admin account to approve the enhanced permissioning change as explained here
+4. In order to complete the node addition, you will need to use your SAFE admin account to approve the enhanced permissioning change as explained [here](## Approving a change in enhanced permissioning)
 
 ## Approving a change in enhanced permissioning
 1. The proposer or the Haven1 team will reach out to you when there's a change that is being proposed.
