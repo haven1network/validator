@@ -194,6 +194,9 @@ Provide the address where you would like your rewards to be sent ([Haven1 Team](
 
 2. Wait for 24 hours for the integration process to be complete.
 
+### Sharing Validator Wallet Information
+1. Share the address of the wallet that would be signing transactions on behalf of the validator. This wallet could be from `Safe`, `Metamask` or even the one created by `geth`. This wallet would be used to sign transactions to add nodes to the networks and other admin related transactions.
+
 ### Spin up the Node
 
 - Once the integration is complete, you will receive the following files:
