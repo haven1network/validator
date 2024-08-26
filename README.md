@@ -10,21 +10,23 @@ This repository uses [Docker](https://docs.docker.com/) and [Docker Compose](htt
 Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/standalone/).
 
 ## Table of Contents
+
 - [Infra Setup](#infra-setup)
 - [Setup Validator Instance](#setup-validator-instance)
-  - [Hardware Requirements](#hardware-requirements)
+  - [Validator Hardware Requirements](#validator-hardware-requirements)
   - [Prerequisites](#prerequisites)
   - [Initial Setup and Key Generation](#initial-setup-and-key-generation)
   - [Sharing Instance Information](#sharing-instance-information)
   - [Sharing Validator Wallet Information](#sharing-validator-wallet-information)
   - [Spin up the Node](#spin-up-the-node)
-  - [Test that the node is validating as expected](#test-node-is-validating)
+  - [Test that the node is validating as expected](#test-that-the-node-is-validating-as-expected)
 - [Setup Cosigner Instance](#setup-cosigner-instance)
-  - [Hardware Requirements](#hardware-requirements)
+  - [Cosigner Hardware Requirements](#cosigner-hardware-requirements)
   - [Installation](#installation)
 
 ## Infra Setup
-1. Open the AWS CloudShell 
+
+1. Open the AWS CloudShell
 
 2. Install Terraform
 
@@ -39,7 +41,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     ```bash
     sudo yum -y install terraform
     ```
-    
+
     ```bash
     terraform -help
     ```
@@ -76,7 +78,7 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
     }
     ```
 
-5. Test your infra setup
+6. Test your infra setup
 
     ```bash
     terraform init
@@ -98,9 +100,10 @@ Here is the Installation Guide for [Docker](https://docs.docker.com/get-docker/)
 
 ## Setup Validator Instance
 
-### Hardware Requirements (already installed through Infra Setup)
+### Validator Hardware Requirements
 
 AWS (t3.medium)
+
 - CPU: 2 vCPU cores
 - Memory: 4 GB
 - Storage: 100 GB
@@ -108,6 +111,7 @@ AWS (t3.medium)
 ### Prerequisites
 
 Get the following file from the [Haven1 Team](mailto:contact@haven1.org)
+
 - genesis.base64 (base 64 encoded)
 
 Provide the address where you would like your rewards to be sent ([Haven1 Team](mailto:contact@haven1.org))
@@ -189,6 +193,7 @@ Provide the address where you would like your rewards to be sent ([Haven1 Team](
     - public IP
 
     You can use this command, copy the result and send it to us:
+
     ```bash
     for file in keystore/accountAddress keystore/address keystore/nodekey.pub .env; do printf "%s: %s\n" "$file" "$(cat "$file")"; done
     ```
@@ -196,13 +201,14 @@ Provide the address where you would like your rewards to be sent ([Haven1 Team](
 2. Wait for 24 hours for the integration process to be complete.
 
 ### Sharing Validator Wallet Information
+
 1. Share the address of the wallet that would be signing transactions on behalf of the validator. This wallet could be from `Safe`, `Metamask` or even the one created by `geth`. This wallet would be used to sign transactions to add nodes to the networks and other admin related transactions.
 
 ### Spin up the Node
 
 - Once the integration is complete, you will receive the following files:
-    - static-nodes.json
-    - permission-config.json
+  - static-nodes.json
+  - permission-config.json
 - Place the files in the `data` folder and run the following command.
 
     ```bash
@@ -220,7 +226,7 @@ Provide the address where you would like your rewards to be sent ([Haven1 Team](
 - Attach a `geth` console to the node:
 
     ```bash
-    docker run -it quorumengineering/quorum:22.7.1 attach data/geth.ipc
+    docker compose exec -it node geth attach /data/geth.ipc
     ```
 
 - Verify Syncing Status. It should return `false` once the syncing is completed
@@ -252,7 +258,9 @@ This number should increase over time as new blocks are added.
     ```javascript
     exit
     ```
+
 ### Install the mpc-approver
+
 The MPC approver is used to approve specific transactions that require an additional layer of security. 
 
 1. Download the latest mpc-approver
@@ -260,33 +268,37 @@ The MPC approver is used to approve specific transactions that require an additi
     ```bash
     wget -O mpc-approver https://github.com/haven1network/validator/releases/download/v1.14.0/mpc-approver-linux-x64
     ```
+
 2. Create the approver keys
-   ```bash
-   cd mpc-approver
-   openssl req -new -newkey rsa:4096 -nodes -keyout approver_secret.key -out approver.csr -subj '/O=HAVEN1'
-   ```
+
+    ```bash
+    cd mpc-approver
+    openssl req -new -newkey rsa:4096 -nodes -keyout approver_secret.key -out approver.csr -subj '/O=HAVEN1'
+    ```
+
    And share with Haven1 team the file `approver.csr`
+
    Do not share and keep the file `approver_secret.key` safe
 
-4. Create a self-signed TLS certificate
-    
+3. Create a self-signed TLS certificate
+
     ```bash
     openssl req -new -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out MpcCertificate.crt -keyout MpcKey.key
     ```
-	- Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
-	- Set `Common Name` as the private IP of your validator instance
 
+    - Enter the Country, State or Province Name, Locality Name, Organization Name, Organizational Unit Name
+    - Set `Common Name` as the private IP of your validator instance
 
-5. Export the following variables
+4. Export the following variables
 
     ```bash
-	export RPC_HAVEN1=https://rpc.haven1.org
-	export BRIDGE_CONTROLLER=0x6fF7796C02a276A88B2E4C3CAE7a219cF8Aa9603
-	export TLS_KEY="$(cat MpcKey.key | base64)"
-	export TLS_CERT="$(cat MpcCertificate.crt | base64)"
+    export RPC_HAVEN1=https://rpc.haven1.org
+    export BRIDGE_CONTROLLER=0x6fF7796C02a276A88B2E4C3CAE7a219cF8Aa9603
+    export TLS_KEY="$(cat MpcKey.key | base64)"
+    export TLS_CERT="$(cat MpcCertificate.crt | base64)"
     ```
 
-6. Give permissions and run 
+5. Give permissions and run
 
     ```bash
     chmod +x mpc-approver
@@ -295,17 +307,19 @@ The MPC approver is used to approve specific transactions that require an additi
 
 ## Setup Cosigner Instance
 
-### Hardware Requirements (already installed through Infra Setup)
+### Cosigner Hardware Requirements
 
 It is required to have a virtual machine with the following recommended requirements:
 
 AWS (c5a.xlarge)
+
 - CPU: 2 vCPU cores
 - Memory: 4 GB
 
 ### Installation
 
 1. Unzip the cosigner on your "cosigner" machine:
+
     ```bash
     sudo su
     cd
@@ -326,7 +340,6 @@ AWS (c5a.xlarge)
     - Enter `KMS ARN` (Full ARN)
     - Enter `callback URL (leave it empty)`
 
-
     ```bash
     ./fireblocks/cosigner callback-update
     ```
@@ -334,7 +347,6 @@ AWS (c5a.xlarge)
     - Enter `Callback URL` (i.e. https://your-validator-private-IP)
     - Enter `2` for certificate
     - Enter `y` for automatically fetching the certificate
-
 
 4. Wait for an approval from the Haven1 team
 
