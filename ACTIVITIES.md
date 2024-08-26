@@ -74,3 +74,33 @@
 ## Config changes proposal
 
 Reach out to the Haven1 team for guidance on how to create a configuration change proposal.
+
+## How to revert the network
+
+- Carry out this activity when the Haven1 Team instructs you.
+- We will provide you with the following information.
+  - Reason to fork
+  - `blockNumber` from which to fork in hexadecimal format
+
+1. Disconnect your validator from the other nodes in the network.
+2. Conenct to the validator node:
+
+    ```bash
+    docker compose exec -it node geth attach /data/geth.ipc
+    ```
+
+3. Reset the head of the validator. Replace `<blockNumber>` with the block number from which to fork in hexadecimal format.
+
+    ```javascript
+    debug.setHead("0x<blockNumber>")
+    ```
+
+4. Exit the console:
+
+    ```javascript
+    exit
+    ```
+
+5. Please update the Haven1 team.
+
+6. Wait for the haven1 team to contact you before conneting to other nodes.
