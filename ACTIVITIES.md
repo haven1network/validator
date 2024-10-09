@@ -19,6 +19,7 @@
 
     ```javascript
     istanbul.propose("0x<address>", true);
+    
     ```
 
 4. In order to complete the node addition, you will need to use your SAFE admin account to approve the enhanced permissioning change as explained [here](#approving-a-change-in-enhanced-permissioning)
@@ -104,3 +105,41 @@ Reach out to the Haven1 team for guidance on how to create a configuration chang
 5. Please update the Haven1 team.
 
 6. Wait for the haven1 team to contact you before conneting to other nodes.
+
+## Remove a validator
+
+- We will provide you with an updated `static-nodes.json` and the following information of the new validator.
+  - address
+  - accountAddress
+  - encodeID
+
+1. Update your `data/static-nodes.json` file with the new one provided by the Haven1 Team.
+
+2. istanbul.propose is the voting process for validators
+
+    ```js
+    istanbul.propose("<node address>", false);
+    ```
+
+3. Attach a `geth` console to the node:
+
+    ```bash
+    docker exec -it validator-node-1 geth attach /data/geth.ipc
+    ```
+
+4. Propose the new removing the validator using the command `istanbul.propose("0x<address>", false)`. Replace `<address>` with the address of the new validator candidate node:
+
+5. Once enough proposals happen (> 50%) istanbul.getValidators() will remove the validator (this will not create a classic transaction in the blockchain)
+
+6. Run the following command equivalant in the safe wallet or approve the enhanced permissioning change as explained [here](#approving-a-change-in-enhanced-permissioning) if not the first validator
+
+    ```js
+    quorumPermission.updateNodeStatus(
+      "HAVEN1",
+      "enode://<Node key pub key>@<IP>:30303?discport=0&raftport=53000",
+      3,
+      { from: eth.accounts[0] },
+    );
+    ```
+
+7. Remove the validator from the safe account
